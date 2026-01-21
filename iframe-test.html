@@ -7,10 +7,31 @@
 <body>
   <h1>Iframe Loaded</h1>
   <p id="origin"></p>
+  <div id="results"></div>
 
   <script>
     document.getElementById("origin").innerText =
       "Origin: " + window.location.origin;
+
+    const results = document.getElementById("results");
+
+    function log(msg) {
+      results.insertAdjacentHTML("beforeend", `<p>${msg}</p>`);
+    }
+
+    // Detect whether we’re actually in an iframe
+    if (window.parent === window) {
+      log("Not in an iframe (window.parent === window). Test is inconclusive.");
+    } else {
+      log("In an iframe. Attempting parent DOM access...");
+
+      try {
+        const parentTitle = window.parent.document.title;
+        log("⚠️ Parent DOM access succeeded. Parent title: " + parentTitle);
+      } catch (e) {
+        log("✅ Parent DOM access blocked: " + e.name + " - " + e.message);
+      }
+    }
   </script>
 </body>
 </html>
